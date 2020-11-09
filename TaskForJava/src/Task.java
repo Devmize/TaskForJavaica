@@ -19,6 +19,9 @@ public class Task {
         return this.id;
     }
 
+    public void setStatus(final boolean status) {
+        this.status = status;
+    }
     public boolean getStatus() {
         return this.status;
     }

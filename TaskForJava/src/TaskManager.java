@@ -12,6 +12,12 @@ public class TaskManager {
         count++;
     }
 
+    public void addTask(String name, boolean status) {
+        tasks.put(count, new Task(name));
+        tasks.get(count).setStatus(status);
+        count++;
+    }
+
     public void printAllTask() {
         for (Map.Entry<Integer, Task> t : tasks.entrySet()) {
             System.out.println(t.getKey());
@@ -44,18 +50,18 @@ public class TaskManager {
         }
 
         var writer = new FileOutputStream(file);
-        writer.write("Невыполненные:\n".getBytes());
         for (Map.Entry<Integer, Task> t : tasks.entrySet()) {
             if (!t.getValue().getStatus()) {
                 writer.write(t.getValue().getName().getBytes());
+                writer.write(" false".getBytes());
                 writer.write('\n');
             }
         }
 
-        writer.write("\nВыполненные:\n".getBytes());
         for (Map.Entry<Integer, Task> t : tasks.entrySet()) {
             if (t.getValue().getStatus()) {
                 writer.write(t.getValue().getName().getBytes());
+                writer.write(" true".getBytes());
                 writer.write('\n');
             }
         }
@@ -66,6 +72,8 @@ public class TaskManager {
         if (!file.contains(".txt")) {
             throw new Exception("Wrong format file.");
         }
+        tasks.clear();
+        count = 1;
 
         var reader = new BufferedReader(new FileReader(file));
         String currentLine;
@@ -73,7 +81,11 @@ public class TaskManager {
             if (currentLine.isEmpty()) {
                 continue;
             }
-            addTask(currentLine);
+
+            var key = currentLine.substring(0, currentLine.indexOf(" "));
+            var value = Boolean.parseBoolean(currentLine.substring(currentLine.indexOf(" ") + 1,
+                    currentLine.length()));
+            addTask(key, value);
         }
 
     }

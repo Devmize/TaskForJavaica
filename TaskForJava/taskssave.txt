@@ -1,5 +1,2 @@
-Невыполненные:
-firsttask
-
-Выполненные:
-secondtask
+firsttask false
+thirdtask true
